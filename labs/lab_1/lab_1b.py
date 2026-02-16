@@ -29,11 +29,13 @@ def simple_calculator(operation: str, num1: float, num2: float) -> float:
         return num1 - num2
     elif operation == "multiply":
         return num1 * num2
-    else:
+    elif operation == "divide":
         if num2 != 0:
             return num1 / num2
         else:
             raise ValueError("Cannot divide by zero.")
+    else:
+        raise ValueError("Invalid operation. Please choose from 'add', 'subtract', 'multiply', or 'divide'.")
 
 def request_sanitized_number(prompt: str) -> float:
     """
@@ -48,35 +50,20 @@ def request_sanitized_number(prompt: str) -> float:
             return number
         except ValueError:
             print("Invalid input. Please enter a valid number.")
-
-def request_sanitized_operation(prompt: str) -> str:
-    """
-    Function to request a sanitized and valid operation
-
-    Returns:
-        str: The sanitized operation by the user
-    """
-    operation = input(prompt).strip().lower()
-    while True:
-        if ((operation != "add") and (operation != "subtract") and (operation != "multiply") and (operation!= "divide")):
-            print("Invalid input. Please enter a valid operation.")
-            operation = input(prompt).strip().lower()
-        else:
-            return operation
-
+        
 def main():
-    
-    print(f"===== Simple Calculator =====")
+    print("===== Simple Calculator =====")
 
-    # Ask the user for sample input    
+    # Ask the user for sample input  
     num1 = request_sanitized_number("Enter the first number: ")
     num2 = request_sanitized_number("Enter the second number: ")
-    operation = request_sanitized_operation("Enter the operation (add, subtract, multiply, divide): ").strip().lower()
+    operation = input("Enter the operation (add, subtract, multiply, divide): ").strip().lower()
 
-    # Perform the calculation and display the result
-    result = simple_calculator(operation, num1, num2)
-    print(f"The result of {operation}ing {num1} and {num2} is: {result}")
-
+    try:
+        result = simple_calculator(operation, num1, num2)
+        print(f"The result of {operation}ing {num1} and {num2} is: {result}")
+    except ValueError as e:
+        print(f"Error: {e}")
 
 if __name__ == "__main__":
     main()
